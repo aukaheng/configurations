@@ -1,0 +1,16 @@
+{
+  "presets": [
+    [
+      "@parcel/babel-preset-env",
+      {
+        "debug": false,
+        "useBuiltIns": "usage",
+        "corejs": {
+          "version": "3.23",
+          "proposals": true
+        }
+      }
+    ],
+    "@babel/preset-typescript"
+  ]
+}
