@@ -1,0 +1,17 @@
+{
+  "name": "",
+  "version": "1.0.0",
+  "license": "UNLICENSED",
+  "dependencies": {
+  },
+  "devDependencies": {
+  },
+  "alias": {
+    "vue": {
+      "global": "Vue"
+    },
+    "bootstrap": {
+      "global": "bootstrap"
+    }
+  }
+}
