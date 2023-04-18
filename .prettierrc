@@ -1,0 +1,13 @@
+{
+  "arrowParens": "always",
+  "bracketSameLine": true,
+  "bracketSpacing": true,
+  "quoteProps": "as-needed",
+  "semi": true,
+  "singleQuote": true,
+  "trailingComma": "none",
+  "vueIndentScriptAndStyle": false,
+  "xmlSelfClosingSpace": false,
+  "xmlWhitespaceSensitivity": "ignore",
+  "printWidth": 120
+}
