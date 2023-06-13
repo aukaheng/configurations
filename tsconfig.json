@@ -5,6 +5,7 @@
     "module": "esnext",
     "target": "esnext",
     "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "noImplicitThis": true,
     "resolveJsonModule": true
