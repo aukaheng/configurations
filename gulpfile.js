@@ -32,25 +32,32 @@ function buildStyles()
 function buildScripts()
 {
   return src('ts/*.ts', { read: false })
-    .pipe(exec(file => `parcel build "${file.path}" --public-url . --no-cache --no-source-maps --no-content-hash`))
+    .pipe(exec(file => `parcel build "${file.path}" --public-url . --no-cache --no-source-maps`))
     .pipe(exec.reporter());
 }
 
 function watching(cb) {
-  const watcher = watch(['ts/*.ts', 'ts/components/*.vue', 'scss/*.scss']);
+  const watcher = watch([
+    'ts/*.ts',
+    'ts/components/*.vue',
+    'scss/*.scss'
+  ]);
 
   watcher.on('change', function (path, stats) {
     console.log('');
     console.log('📦📦📦📦📦📦📦📦📦📦📦📦📦📦📦📦📦📦📦📦📦📦📦📦📦📦📦📦📦📦📦📦📦📦📦📦');
     console.log('Start building ' + path + '...');
 
-    const regex = new RegExp('.vue$');
+    // const regex = new RegExp('.vue$');
 
     // ts\registration.ts <--> ts\components\registration.vue
-    if (regex.test(path)) {
+    if (/.vue$/.test(path)) {
       path = path.replace(/\\components\\/, '\\');
       path = path.replace(regex, '.ts');
-      console.log('Building from its related TypeScript: ' + path + '...');
+      console.log("\nBuilding from its corresponding TypeScript file: " + path + '...');
+    } else if (/.d.ts$/.test(path)) {
+      console.log("\nThis is a definition file 😛\n");
+      return;
     }
 
     fs.access(path, (err) => {
@@ -61,7 +68,7 @@ function watching(cb) {
         const cmd =
           'yarn run parcel build "' +
           path +
-          '" --public-url . --no-cache --no-source-maps --no-optimize';
+          '" --public-url . --no-cache --no-source-maps --no-optimize --no-content-hash';
 
         childProcessExecute(
           cmd,
