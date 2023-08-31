@@ -9,5 +9,7 @@
   "vueIndentScriptAndStyle": false,
   "xmlSelfClosingSpace": false,
   "xmlWhitespaceSensitivity": "ignore",
-  "printWidth": 120
+  "plugins": [
+    "@prettier/plugin-xml"
+  ]
 }
