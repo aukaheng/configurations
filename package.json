@@ -2,13 +2,30 @@
   "name": "",
   "version": "1.0.0",
   "license": "UNLICENSED",
+  "packageManager": "yarn@x.y.z",
   "dependencies": {
   },
   "devDependencies": {
+    "@prettier/plugin-xml": "^x.y.z",
+    "@typescript-eslint/eslint-plugin": "^x.y.z",
+    "@typescript-eslint/parser": "^x.y.z",
+    "eslint": "^x.y.z",
+    "eslint-config-prettier": "^x.y.z",
+    "eslint-plugin-prettier": "^x.y.z",
+    "eslint-plugin-vue": "^x.y.z",
+    "gulp": "^x.y.z",
+    "gulp-exec": "^x.y.z",
+    "parcel": "^x.y.z",
+    "prettier": "^x.y.z",
+    "sass": "^x.y.z",
+    "typescript": "^x.y.z"
   },
   "alias": {
     "vue": {
       "global": "Vue"
+    },
+    "jquery": {
+      "global": "$"
     },
     "bootstrap": {
       "global": "bootstrap"
