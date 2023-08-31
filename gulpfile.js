@@ -6,13 +6,19 @@ const fs = require('fs');
 
 function copyNPMFiles() {
   return src([
-    'node_modules/x/y/z.min.js',
-    'node_modules/a/b/c.min.js'
+    'node_modules/bootstrap/dist/js/bootstrap.bundle.min.js',
+    'node_modules/bootstrap/dist/js/bootstrap.bundle.min.js.map',
+    'node_modules/bootstrap/dist/css/bootstrap.min.css',
+    'node_modules/bootstrap/dist/css/bootstrap.min.css.map',
+    'node_modules/bootstrap-icons/font/bootstrap-icons.css'
   ])
     .pipe(dest('dist'));
 }
+
 function copyWebFonts() {
-  return src(['node_modules/x/y/z/fonts/*.*'])
+  return src([
+    'node_modules/bootstrap-icons/font/fonts/*.*'
+  ])
     .pipe(dest('dist/fonts'));
 }
 
