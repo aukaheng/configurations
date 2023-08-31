@@ -16,16 +16,17 @@ function copyWebFonts() {
     .pipe(dest('dist/fonts'));
 }
 
-function buildProduction() {
-  return src(['ts/*.ts', 'scss/*.scss'], {
-    read: false
-  })
-    .pipe(
-      exec(
-        (file) =>
-          `parcel build "${file.path}" --public-url . --no-cache --no-source-maps`
-      )
-    )
+function buildStyles()
+{
+  return src('scss/*.scss', { read: false })
+    .pipe(exec(file => `parcel build "${file.path}" --public-url . --no-cache --no-source-maps --no-content-hash`))
+    .pipe(exec.reporter());
+}
+
+function buildScripts()
+{
+  return src('ts/*.ts', { read: false })
+    .pipe(exec(file => `parcel build "${file.path}" --public-url . --no-cache --no-source-maps --no-content-hash`))
     .pipe(exec.reporter());
 }
 
@@ -82,6 +83,11 @@ function watching(cb) {
   });
 }
 
-exports.build = parallel(copyNPMFiles, copyWebFonts, buildProduction);
+exports.publish = parallel(
+  copyNPMFiles,
+  copyWebFonts,
+  buildScripts,
+  buildStyles
+);
 exports.watch = watching;
 exports.default = series(copyWebFonts, copyNPMFiles);
