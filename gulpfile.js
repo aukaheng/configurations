@@ -1,8 +1,9 @@
 const { src, dest, watch, parallel, series } = require('gulp');
-const exec = require('gulp-exec');
 
-const childProcessExecute = require('child_process').exec;
+const exec = require('child_process').exec;
 const fs = require('fs');
+
+const tap = require('gulp-tap');
 
 function copyNPMFiles() {
   return src([
@@ -22,18 +23,50 @@ function copyWebFonts() {
     .pipe(dest('dist/fonts'));
 }
 
-function buildStyles()
+function buildStyles(cb)
 {
   return src('scss/*.scss', { read: false })
-    .pipe(exec(file => `parcel build "${file.path}" --public-url . --no-cache --no-source-maps --no-content-hash`))
-    .pipe(exec.reporter());
+    .pipe(tap(function () {
+      const cmd = `yarn run parcel build "${file.path}" --public-url . --no-cache --no-source-maps --no-content-hash`;
+
+      exec(cmd, {
+        env: {
+          ...process.env,
+          FORCE_COLOR: 1
+        }
+      }, function (error, stdout, stderr) {
+        if (error == null) {
+          console.log(stdout);
+        } else {
+          console.log(stderr);
+        }
+
+        cb(error);
+      });
+    }));
 }
 
-function buildScripts()
+function buildScripts(cb)
 {
   return src('ts/*.ts', { read: false })
-    .pipe(exec(file => `parcel build "${file.path}" --public-url . --no-cache --no-source-maps`))
-    .pipe(exec.reporter());
+    .pipe(tap(function () {
+      const cmd = `yarn run parcel build "${file.path}" --public-url . --no-cache --no-source-maps`;
+
+      exec(cmd, {
+        env: {
+          ...process.env,
+          FORCE_COLOR: 1
+        }
+      }, function (error, stdout, stderr) {
+        if (error == null) {
+          console.log(stdout);
+        } else {
+          console.log(stderr);
+        }
+
+        cb(error);
+      });
+    }));
 }
 
 function watching(cb) {
@@ -70,7 +103,7 @@ function watching(cb) {
           path +
           '" --public-url . --no-cache --no-source-maps --no-optimize --no-content-hash';
 
-        childProcessExecute(
+        exec(
           cmd,
           {
             env: {
@@ -89,6 +122,8 @@ function watching(cb) {
             } else {
               console.log('🤩🤩🤩🤩🤩🤩 Done!');
             }
+
+            cb(error);
           }
         );
       }
