@@ -2,23 +2,31 @@
   "name": "",
   "version": "1.0.0",
   "license": "UNLICENSED",
-  "packageManager": "yarn@x.y.z",
+  "packageManager": "pnpm@8.15.4",
   "dependencies": {
+    "bootstrap": "^5.3.3",
+    "bootstrap-icons": "^1.11.3",
+    "vue": "^3.4.21"
   },
   "devDependencies": {
-    "@prettier/plugin-xml": "^x.y.z",
-    "@typescript-eslint/eslint-plugin": "^x.y.z",
-    "@typescript-eslint/parser": "^x.y.z",
-    "eslint": "^x.y.z",
-    "eslint-config-prettier": "^x.y.z",
-    "eslint-plugin-prettier": "^x.y.z",
-    "eslint-plugin-vue": "^x.y.z",
-    "gulp": "^x.y.z",
-    "gulp-exec": "^x.y.z",
-    "parcel": "^x.y.z",
-    "prettier": "^x.y.z",
-    "sass": "^x.y.z",
-    "typescript": "^x.y.z"
+    "@parcel/transformer-sass": "2.12.0",
+    "@parcel/transformer-vue": "2.12.0",
+    "@typescript-eslint/eslint-plugin": "^7.1.1",
+    "@typescript-eslint/parser": "^7.1.1",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.3",
+    "eslint-plugin-vue": "^9.22.0",
+    "gulp": "^4.0.2",
+    "gulp-tap": "^2.0.0",
+    "parcel": "^2.12.0",
+    "postcss": "^8.4.35",
+    "prettier": "^3.2.5",
+    "sass": "^1.71.1",
+    "typescript": "^5.4.2",
+    "vue-eslint-parser": "^9.4.2",
+    
+    "@prettier/plugin-xml": "^x.y.z"
   },
   "alias": {
     "vue": {
