@@ -1,94 +1,103 @@
-const { src, dest, watch, parallel, series } = require('gulp');
+const { src, dest, parallel, series, watch } = require('gulp');
+const tap = require('gulp-tap');
 
 const exec = require('child_process').exec;
 const fs = require('fs');
 
-const tap = require('gulp-tap');
-
-function copyNPMFiles() {
-  return src([
-    'node_modules/bootstrap/dist/js/bootstrap.bundle.min.js',
-    'node_modules/bootstrap/dist/js/bootstrap.bundle.min.js.map',
-    'node_modules/bootstrap/dist/css/bootstrap.min.css',
-    'node_modules/bootstrap/dist/css/bootstrap.min.css.map',
-    'node_modules/bootstrap-icons/font/bootstrap-icons.css'
-  ])
-    .pipe(dest('dist'));
-}
-
-function copyWebFonts() {
+function copyWebFonts()
+{
   return src([
     'node_modules/bootstrap-icons/font/fonts/*.*'
   ])
     .pipe(dest('dist/fonts'));
 }
 
+function copyNPMFiles()
+{
+  return src([
+    'node_modules/bootstrap/dist/js/bootstrap.bundle.min.js',
+    'node_modules/bootstrap/dist/js/bootstrap.bundle.min.js.map',
+    'node_modules/bootstrap/dist/css/bootstrap.min.css',
+    'node_modules/bootstrap/dist/css/bootstrap.min.css.map',
+    'node_modules/bootstrap-icons/font/bootstrap-icons.css',
+    'node_modules/jquery/dist/jquery.min.js',
+    'node_modules/jquery/dist/jquery.min.map'
+  ])
+    .pipe(dest('dist'));
+}
+
 function buildStyles(cb)
 {
   return src('scss/*.scss', { read: false })
-    .pipe(tap(function () {
-      const cmd = `yarn run parcel build "${file.path}" --public-url . --no-cache --no-source-maps --no-content-hash`;
+    .pipe(tap(function (file) {
+      exec(
+        `pnpm exec parcel build "${file.path}" --public-url . --no-cache --no-source-maps --no-content-hash`,
+        {
+          env: {
+            ...process.env,
+            FORCE_COLOR: 1
+          }
+        },
+        function (error, stdout, stderr) {
+          if (error == null) {
+            console.log(stdout);
+          } else {
+            console.log(stderr);
+          }
 
-      exec(cmd, {
-        env: {
-          ...process.env,
-          FORCE_COLOR: 1
+          cb(error);
         }
-      }, function (error, stdout, stderr) {
-        if (error == null) {
-          console.log(stdout);
-        } else {
-          console.log(stderr);
-        }
-
-        cb(error);
-      });
+      );
     }));
 }
 
 function buildScripts(cb)
 {
   return src('ts/*.ts', { read: false })
-    .pipe(tap(function () {
-      const cmd = `yarn run parcel build "${file.path}" --public-url . --no-cache --no-source-maps`;
+    .pipe(tap(function (file) {
+      exec(
+        `pnpm exec parcel build "${file.path}" --public-url . --no-cache --no-source-maps`,
+        {
+          env: {
+            ...process.env,
+            FORCE_COLOR: 1
+          }
+        },
+        function (error, stdout, stderr) {
+          if (error == null) {
+            console.log(stdout);
+          } else {
+            console.log(stderr);
+          }
 
-      exec(cmd, {
-        env: {
-          ...process.env,
-          FORCE_COLOR: 1
+          cb(error);
         }
-      }, function (error, stdout, stderr) {
-        if (error == null) {
-          console.log(stdout);
-        } else {
-          console.log(stderr);
-        }
-
-        cb(error);
-      });
+      );
     }));
 }
 
-function watching(cb) {
+function watching(cb)
+{
   const watcher = watch([
+    'scss/*.scss',
     'ts/*.ts',
-    'ts/components/*.vue',
-    'scss/*.scss'
+    'ts/*.vue'
   ]);
 
   watcher.on('change', function (path, stats) {
     console.log('');
-    console.log('📦📦📦📦📦📦📦📦📦📦📦📦📦📦📦📦📦📦📦📦📦📦📦📦📦📦📦📦📦📦📦📦📦📦📦📦');
-    console.log('Start building ' + path + '...');
+    console.log('Start building ' + path + '📦📦📦📦📦📦');
 
-    // const regex = new RegExp('.vue$');
+    const regex = new RegExp('.vue$');
 
-    // ts\registration.ts <--> ts\components\registration.vue
-    if (/.vue$/.test(path)) {
+    // ts\registration.ts
+    // ts\components\registration.vue
+    if (regex.test(path)) {
       path = path.replace(/\\components\\/, '\\');
       path = path.replace(regex, '.ts');
-      console.log("\nBuilding from its corresponding TypeScript file: " + path + '...');
-    } else if (/.d.ts$/.test(path)) {
+      console.log('Building from its TS ' + path + '📦📦📦📦📦📦');
+    }
+    else if (/.d.ts$/.test(path)) {
       console.log("\nThis is a definition file 😛\n");
       return;
     }
@@ -98,10 +107,7 @@ function watching(cb) {
         console.log('🤢🤢🤢🤢🤢🤢 File not found!');
         console.log('');
       } else {
-        const cmd =
-          'yarn run parcel build "' +
-          path +
-          '" --public-url . --no-cache --no-source-maps --no-optimize --no-content-hash';
+        const cmd = 'pnpm exec parcel build "' + path + '" --public-url . --no-cache --no-source-maps --no-content-hash --no-optimize';
 
         exec(
           cmd,
@@ -112,9 +118,9 @@ function watching(cb) {
             }
           },
           function (error, stdout, stderr) {
-            console.log('------------------------------------------------------------------------------');
+            console.log('+------------------------------------------------------------------------------');
             console.log(stdout);
-            console.log("------------------------------------------------------------------------------\n");
+            console.log("+------------------------------------------------------------------------------\n");
 
             if (stderr != null && stderr != '') {
               console.log(stderr);
@@ -132,10 +138,12 @@ function watching(cb) {
 }
 
 exports.publish = parallel(
-  copyNPMFiles,
   copyWebFonts,
-  buildScripts,
-  buildStyles
+  copyNPMFiles,
+  buildStyles,
+  buildScripts
 );
+
 exports.watch = watching;
-exports.default = series(copyWebFonts, copyNPMFiles);
+
+exports.default = buildStyles;
