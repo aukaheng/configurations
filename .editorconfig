@@ -117,7 +117,5 @@ csharp_new_line_before_finally = false
 csharp_new_line_before_open_brace = accessors,anonymous_methods,anonymous_types,lambdas,methods,object_collection_array_initializers,properties,types
 
 [*.resx]
-resx_formatter_sort_entries=true
 resx_formatter_remove_xsd_schema=true
 resx_formatter_remove_documentation_comment=true
-resx_formatter_sort_comparer=OrdinalIgnoreCase
