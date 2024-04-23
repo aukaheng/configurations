@@ -9,7 +9,11 @@
     "esModuleInterop": true,
     "noImplicitThis": true,
     "resolveJsonModule": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "typeRoots": [
+      "./node_modules/@types",
+      "./ts/@types"
+    ]
   },
   "exclude": [
     "wwwroot"
