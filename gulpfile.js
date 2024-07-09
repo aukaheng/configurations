@@ -1,15 +1,21 @@
 const { src, dest, parallel, series, watch } = require('gulp');
 const tap = require('gulp-tap');
+const robocopy = require('robocopy');
 
 const exec = require('child_process').exec;
 const fs = require('fs');
 
-function copyWebFonts()
+function copyWebFonts(cb)
 {
-  return src([
-    'node_modules/bootstrap-icons/font/fonts/*.*'
-  ])
-    .pipe(dest('dist/fonts'));
+  robocopy({
+    source: 'node_modules/bootstrap-icons/font/fonts',
+    destination: 'dist/fonts',
+    files: [
+      '*.*'
+    ]
+  });
+
+  cb();
 }
 
 function copyNPMFiles()
