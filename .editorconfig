@@ -120,6 +120,8 @@ csharp_new_line_before_open_brace = accessors,anonymous_methods,anonymous_types,
 csharp_prefer_simple_using_statement = false
 # IDE0290
 csharp_style_prefer_primary_constructors = false
+# ReSharper
+resharper_use_string_interpolation_highlighting = none
 
 [*.resx]
 resx_formatter_remove_xsd_schema=true
