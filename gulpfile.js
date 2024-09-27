@@ -91,21 +91,20 @@ function watching(cb)
   const watcher = watch([
     'scss/*.scss',
     'ts/*.ts',
-    'ts/*.vue'
+    'ts/**/*.vue'
   ]);
 
   watcher.on('change', function (path, stats) {
-    console.log('');
-    console.log('Start building ' + path + '📦📦📦📦📦📦');
+    console.log('📦 ' + path + '...');
 
     const regex = new RegExp('.vue$');
 
-    // ts\registration.ts
-    // ts\components\registration.vue
+    // ts\a.ts
+    // ts\components\a.vue
     if (regex.test(path)) {
       path = path.replace(/\\components\\/, '\\');
       path = path.replace(regex, '.ts');
-      console.log('Building from its TS ' + path + '📦📦📦📦📦📦');
+      console.log('📦 ' + path + '...');
     }
     else if (/.d.ts$/.test(path)) {
       console.log("\nThis is a definition file 😛\n");
@@ -114,34 +113,32 @@ function watching(cb)
 
     fs.access(path, (err) => {
       if (err) {
-        console.log('🤢🤢🤢🤢🤢🤢 File not found!');
+        console.log('🤢 File not found');
         console.log('');
       } else {
         const cmd = 'pnpm exec parcel build "' + path + '" --public-url . --no-cache --no-source-maps --no-content-hash --no-optimize';
 
-        exec(
-          cmd,
-          {
-            env: {
-              ...process.env,
-              FORCE_COLOR: 1
-            }
-          },
-          function (error, stdout, stderr) {
-            console.log('+------------------------------------------------------------------------------');
-            console.log(stdout);
-            console.log("+------------------------------------------------------------------------------\n");
+        console.log('+-----------------------------------------------+');
+        console.log('|                                               |');
 
-            if (stderr != null && stderr != '') {
-              console.log(stderr);
-              console.log('🤮🤮🤮🤮🤮🤮 Error!');
-            } else {
-              console.log('🤩🤩🤩🤩🤩🤩 Done!');
+        try {
+          exec(
+            cmd,
+            {
+              env: {
+                ...process.env,
+                FORCE_COLOR: 1
+              },
+              stdio: 'inherit'
             }
+          );
+        } catch (e) {
+          console.log('🤮🤮🤮🤮🤮🤮');
+        }
 
-            cb(error);
-          }
-        );
+        console.log('|                                               |');
+        console.log('+-----------------------------------------------+');
+        console.log('');
       }
     });
   });
