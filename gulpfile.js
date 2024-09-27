@@ -2,7 +2,7 @@ const { src, dest, parallel, series, watch } = require('gulp');
 const tap = require('gulp-tap');
 const robocopy = require('robocopy');
 
-const exec = require('child_process').exec;
+const exec = require('child_process').execSync;
 const fs = require('fs');
 
 function copyWebFonts(cb)
@@ -18,18 +18,20 @@ function copyWebFonts(cb)
   cb();
 }
 
-function copyNPMFiles()
+function copyNPMFiles(cb)
 {
-  return src([
+  src([
     'node_modules/bootstrap/dist/js/bootstrap.bundle.min.js',
     'node_modules/bootstrap/dist/js/bootstrap.bundle.min.js.map',
     'node_modules/bootstrap/dist/css/bootstrap.min.css',
     'node_modules/bootstrap/dist/css/bootstrap.min.css.map',
-    'node_modules/bootstrap-icons/font/bootstrap-icons.css',
-    'node_modules/jquery/dist/jquery.min.js',
-    'node_modules/jquery/dist/jquery.min.map'
+    'node_modules/bootstrap-icons/font/bootstrap-icons.min.css',
+    'node_modules/vue/dist/vue.global.js',
+    'node_modules/vue/dist/vue.global.prod.js'
   ])
     .pipe(dest('dist'));
+
+  cb();
 }
 
 function buildStyles(cb)
