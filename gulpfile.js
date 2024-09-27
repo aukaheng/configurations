@@ -64,24 +64,25 @@ function buildScripts(cb)
 {
   return src('ts/*.ts', { read: false })
     .pipe(tap(function (file) {
-      exec(
-        `pnpm exec parcel build "${file.path}" --public-url . --no-cache --no-source-maps`,
-        {
-          env: {
-            ...process.env,
-            FORCE_COLOR: 1
-          }
-        },
-        function (error, stdout, stderr) {
-          if (error == null) {
-            console.log(stdout);
-          } else {
-            console.log(stderr);
-          }
+      console.log('');
+      console.log('🟦 ' + file.basename);
 
-          cb(error);
-        }
-      );
+      try {
+        exec(
+          `pnpm exec parcel build "${file.path}" --public-url . --no-cache --no-source-maps`,
+          {
+            env: {
+              ...process.env,
+              FORCE_COLOR: 1
+            },
+            stdio: 'inherit'
+          }
+        );
+
+        console.log('😆');
+      } catch (e) {
+        console.log('🤮');
+      }
     }));
 }
 
