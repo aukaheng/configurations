@@ -14,6 +14,7 @@ charset = utf-8
 ij_continuation_indent_size = 2
 
 [*.md]
+insert_final_newline = false
 trim_trailing_whitespace = false
 
 [*.{html,cshtml}]
@@ -124,5 +125,5 @@ csharp_style_prefer_primary_constructors = false
 resharper_use_string_interpolation_highlighting = none
 
 [*.resx]
-resx_formatter_remove_xsd_schema=true
-resx_formatter_remove_documentation_comment=true
+resx_formatter_remove_xsd_schema = true
+resx_formatter_remove_documentation_comment = true
